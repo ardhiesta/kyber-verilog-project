@@ -1,3 +1,4 @@
+// copied from https://github.com/freecores/sha3
 /*
  * Copyright 2013, Homer Hsing <homer.hsing@gmail.com>
  *

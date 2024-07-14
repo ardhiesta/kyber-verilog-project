@@ -1,3 +1,4 @@
+// copied from https://github.com/freecores/sha3
 /*
  * Copyright 2013, Homer Hsing <homer.hsing@gmail.com>
  *
@@ -29,12 +30,7 @@ module padder1(in, byte_num, out);
     
     always @ (*)
       case (byte_num)
-      /*
-        0: out = 32'h1000000;
-        1: out = {in[31:24], 24'h010000};
-        2: out = {in[31:16], 16'h0100};
-        3: out = {in[31:8],   8'h01};
-*/
+      // change pad data to latest SHA3 specs from NIST 
         0: out = 32'h6000000;
         1: out = {in[31:24], 24'h060000};
         2: out = {in[31:16], 16'h0600};
