@@ -56,6 +56,11 @@ module tb_padder;
         byte_num = 0;
         f_ack = 0;
 
+        /* before 3s:
+        * all values is unknown (x), then reset = 1 and other values become 0
+        * https://github.com/ardhiesta/kyber-verilog-project/blob/main/docs/imgs/reset-effects.png?raw=true
+        */
+
         // Wait 100 ns for global reset to finish
         #100;
 

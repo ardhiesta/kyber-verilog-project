@@ -48,7 +48,7 @@ module tb_padder1;
         // byte_num = 0, ganti semua input dengan pad 32'h06
         // out: 00000110000000000000000000000000
 
-        // note:
+        // note (in Indonesian):
         // h06 = 00000110
         // tapi di sejumlah dokumentasi lain, penulisan dibalik jadi 01100000
 
