@@ -89,8 +89,15 @@ module tb_padder_ori;
         time=100, clk=0, reset=1, in=00000000, in_ready=0, is_last=0, byte_num=00, buffer_full=0, out=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, out_ready=0, f_ack=0, uut.out=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, uut.v0=06000000, uut.v1=00000000
         */
 
-        // // Add stimulus here
-        // @ (negedge clk);
+        // Add stimulus here
+        @ (negedge clk);
+        /*
+        currently I have no idea what is "@ (negedge clk);"
+
+        Negedge clock operation is also used in testbenches, to avoid race condition between DUT and Testbench, since both are driven at different clock edges.
+
+        https://stackoverflow.com/questions/42664393/what-is-the-merit-to-using-the-negedge-clock-in-verilog
+        */
 
         // // pad an empty string, should not eat next input
         // reset = 1; #(`P); reset = 0;
