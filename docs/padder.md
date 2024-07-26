@@ -99,8 +99,15 @@ module tb_padder_ori;
         https://stackoverflow.com/questions/42664393/what-is-the-merit-to-using-the-negedge-clock-in-verilog
         */
 
-        // // pad an empty string, should not eat next input
-        // reset = 1; #(`P); reset = 0;
+        // pad an empty string, should not eat next input
+        reset = 1; #(`P); reset = 0;
+        /*
+        on 120, the value of reset become 0
+
+        tb_padder_ori.v:200: $finish called at 120000 (1ps)
+        time=120, clk=0, reset=0, in=00000000, in_ready=0, is_last=0, byte_num=00, buffer_full=0, out=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, out_ready=0, f_ack=0, uut.out=000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000, uut.v0=06000000, uut.v1=00000000 
+        */
+
         // #(7*`P); // wait some cycles
         // if (buffer_full !== 0) error;
         // in_ready = 1;
