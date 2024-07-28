@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-`include "../rtl/pad/padder1.v"
+`include "../rtl/hash/padder1.v"
 `timescale 1ns / 1ps
 `define P 20
 
@@ -60,7 +60,7 @@ module tb_padder1;
         // out: 10010000101010111100110100000110
 
         // Add stimulus here
-        in = 32'b10010000101010111100110111101111;
+        /*in = 32'b10010000101010111100110111101111;
         byte_num = 0;
         wish = 32'b00000110000000000000000000000000;
         check;
@@ -72,7 +72,13 @@ module tb_padder1;
         check;
         byte_num = 3;
         wish = 32'b10010000101010111100110100000110;
+        check;*/
+
+        in = 32'h90ABCDEF;
+        byte_num = 1;
+        wish = 32'h90060000;
         check;
+
         $display("Good!");
         $finish;
     end
