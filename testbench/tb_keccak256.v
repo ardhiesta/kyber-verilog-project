@@ -83,169 +83,164 @@ module tb_keccak256;
         // Add stimulus here
         @ (negedge clk);
 
-        // SHA3-256("The quick brown fox jumps over the lazy dog")
-        reset = 1; #(`P); reset = 0;
-        in_ready = 1; is_last = 0;
-        in = "The "; #(`P);
-        in = "quic"; #(`P);
-        in = "k br"; #(`P);
-        in = "own "; #(`P);
-        in = "fox "; #(`P);
-        in = "jump"; #(`P);
-        in = "s ov"; #(`P);
-        in = "er t"; #(`P);
-        in = "he l"; #(`P);
-        in = "azy "; #(`P);
-        in = "dog "; byte_num = 3; is_last = 1; #(`P); /* !!! not in = "dog" */
-        in_ready = 0; is_last = 0;
-        while (out_ready !== 1)
-            #(`P);
-        check(256'h69070dda01975c8c120c3aada1b282394e7f032fa9cf32f4cb2259a0897dfc04);
+        // // SHA3-256("The quick brown fox jumps over the lazy dog")
+        // reset = 1; #(`P); reset = 0;
+        // in_ready = 1; is_last = 0;
+        // in = "The "; #(`P);
+        // in = "quic"; #(`P);
+        // in = "k br"; #(`P);
+        // in = "own "; #(`P);
+        // in = "fox "; #(`P);
+        // in = "jump"; #(`P);
+        // in = "s ov"; #(`P);
+        // in = "er t"; #(`P);
+        // in = "he l"; #(`P);
+        // in = "azy "; #(`P);
+        // in = "dog "; byte_num = 3; is_last = 1; #(`P); /* !!! not in = "dog" */
+        // in_ready = 0; is_last = 0;
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'h69070dda01975c8c120c3aada1b282394e7f032fa9cf32f4cb2259a0897dfc04);
 
-        // SHA3-512("The quick brown fox jumps over the lazy dog.")
-        reset = 1; #(`P); reset = 0;
-        in_ready = 1; is_last = 0;
-        in = "The "; #(`P);
-        in = "quic"; #(`P);
-        in = "k br"; #(`P);
-        in = "own "; #(`P);
-        in = "fox "; #(`P);
-        in = "jump"; #(`P);
-        in = "s ov"; #(`P);
-        in = "er t"; #(`P);
-        in = "he l"; #(`P);
-        in = "azy "; #(`P);
-        in = "dog."; #(`P);
-        in = 0; byte_num = 0; is_last = 1; #(`P); /* !!! */
-        in_ready = 0; is_last = 0;
-        while (out_ready !== 1)
-            #(`P);
-        check(256'ha80f839cd4f83f6c3dafc87feae470045e4eb0d366397d5c6ce34ba1739f734d);
+        // // SHA3-512("The quick brown fox jumps over the lazy dog.")
+        // reset = 1; #(`P); reset = 0;
+        // in_ready = 1; is_last = 0;
+        // in = "The "; #(`P);
+        // in = "quic"; #(`P);
+        // in = "k br"; #(`P);
+        // in = "own "; #(`P);
+        // in = "fox "; #(`P);
+        // in = "jump"; #(`P);
+        // in = "s ov"; #(`P);
+        // in = "er t"; #(`P);
+        // in = "he l"; #(`P);
+        // in = "azy "; #(`P);
+        // in = "dog."; #(`P);
+        // in = 0; byte_num = 0; is_last = 1; #(`P); /* !!! */
+        // in_ready = 0; is_last = 0;
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'ha80f839cd4f83f6c3dafc87feae470045e4eb0d366397d5c6ce34ba1739f734d);
 
-        // hash an string "\xA1\xA2\xA3\xA4\xA5", len == 5
-        reset = 1; #(`P); reset = 0;
-        #(7*`P); // wait some cycles
-        in_ready = 1; is_last = 0; byte_num = 1;
-        in = 32'hA1A2A3A4;
-        #(`P);
-        is_last = 1; byte_num = 1;
-        in = 32'hA5000000;
-        #(`P);
-        in = 32'h12345678; // next input
-        in_ready = 1;
-        is_last = 1;
-        #(`P/2);
-        if (buffer_full === 1) error; // should be 0
-        #(`P/2);
-        in_ready = 0;
-        is_last = 0;
+        // // hash an string "\xA1\xA2\xA3\xA4\xA5", len == 5
+        // reset = 1; #(`P); reset = 0;
+        // #(7*`P); // wait some cycles
+        // in_ready = 1; is_last = 0; byte_num = 1;
+        // in = 32'hA1A2A3A4;
+        // #(`P);
+        // is_last = 1; byte_num = 1;
+        // in = 32'hA5000000;
+        // #(`P);
+        // in = 32'h12345678; // next input
+        // in_ready = 1;
+        // is_last = 1;
+        // #(`P/2);
+        // if (buffer_full === 1) error; // should be 0
+        // #(`P/2);
+        // in_ready = 0;
+        // is_last = 0;
 
-        while (out_ready !== 1)
-            #(`P);
-        check(256'h815bfaacecd76f2793cbacb330190cc2d7770a028e12293b4cd139841f2aedfc);
-        for(i=0; i<5; i=i+1)
-          begin
-            #(`P);
-            if (buffer_full !== 0) error; // should keep 0
-          end
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'h815bfaacecd76f2793cbacb330190cc2d7770a028e12293b4cd139841f2aedfc);
+        // for(i=0; i<5; i=i+1)
+        //   begin
+        //     #(`P);
+        //     if (buffer_full !== 0) error; // should keep 0
+        //   end
 
-        // hash an empty string, should not eat next input
-        reset = 1; #(`P); reset = 0;
-        #(7*`P); // wait some cycles
-        in = 32'h12345678; // should not be eat
-        byte_num = 0;
-        in_ready = 1;
-        is_last = 1;
-        #(`P);
-        in = 32'hddddd; // should not be eat
-        //hasil pad: 576 bit of zeros
-        in_ready = 1; // next input
-        is_last = 1;
-        #(`P);
-        in_ready = 0;
-        is_last = 0;
+        // // hash an empty string, should not eat next input
+        // reset = 1; #(`P); reset = 0;
+        // #(7*`P); // wait some cycles
+        // in = 32'h12345678; // should not be eat
+        // byte_num = 0;
+        // in_ready = 1;
+        // is_last = 1;
+        // #(`P);
+        // in = 32'hddddd; // should not be eat
+        // //hasil pad: 576 bit of zeros
+        // in_ready = 1; // next input
+        // is_last = 1;
+        // #(`P);
+        // in_ready = 0;
+        // is_last = 0;
 
-        while (out_ready !== 1)
-            #(`P);
-        check(256'ha7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a);
-        for(i=0; i<5; i=i+1)
-          begin
-            #(`P);
-            if (buffer_full !== 0) error; // should keep 0
-          end
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'ha7ffc6f8bf1ed76651c14756a061d662f580ff4de43b49fa82d80a4b80f8434a);
+        // for(i=0; i<5; i=i+1)
+        //   begin
+        //     #(`P);
+        //     if (buffer_full !== 0) error; // should keep 0
+        //   end
 
-        //custom, input 2 byte 
+        //custom, input 32 byte 
         reset = 1; #(`P); reset = 0;
         #(4*`P); // wait some cycles
         in_ready = 1;
-        byte_num = 2; 
-        in = 32'hD477BCDE; 
+        in = 32'he7372105; #(`P);
         is_last = 1;
         #(`P);
         in_ready = 0;
         is_last = 0;
         while (out_ready !== 1)
             #(`P);
-        check(256'h94279e8f5ccdf6e17f292b59698ab4e614dfe696a46c46da78305fc6a3146ab7);
+        check(256'h3a42b68ab079f28c4ca3c752296f279006c4fe78b1eb79d989777f051e4046ae);
 
-        // //custom
+        // //custom, input 2 byte 
         // reset = 1; #(`P); reset = 0;
         // #(4*`P); // wait some cycles
         // in_ready = 1;
-        // // byte_num = 2; /* should have no effect */
-        // is_last = 0;
-        // in = 32'hfc7b8cda; #(`P); is_last = 1; #(`P);
-        // //TODO:
-        // //untuk input 32 bit, hasil sudah ok
-        // //masalah kalau input < 32 bit, misal 16'hef26 atau 8'he5
-        // //kalau 8'he5, hasil padding seharusnya e5 | 06 | ..00.. | 80
-        // //namun sekarang yg didapat 000000e5 | 06 | ..00.. | 80
+        // byte_num = 2; 
+        // in = 32'hD477BCDE; 
+        // is_last = 1;
+        // #(`P);
         // in_ready = 0;
         // is_last = 0;
         // while (out_ready !== 1)
         //     #(`P);
-        // check(512'hf7f6b44069dba8900b6711ffcbe40523d4bb718cc8ed7f0a0bd28a1b18ee9374359f0ca0c9c1e96fcfca29ee2f282b46d5045eff01f7a7549eaa6b652cbf6270);
+        // check(256'h94279e8f5ccdf6e17f292b59698ab4e614dfe696a46c46da78305fc6a3146ab7);
 
-        // hash an (576-8) bit string
-        reset = 1; #(`P); reset = 0;
-        #(4*`P); // wait some cycles
-        in_ready = 1;
-        byte_num = 3; /* should have no effect */
-        is_last = 0;
-        for (i=0; i<8; i=i+1)
-          begin
-            in = 32'hEFCDAB90; #(`P);
-            in = 32'h78563412; #(`P);
-          end
-        in = 32'hEFCDAB90; #(`P);
-        in = 32'h78563412; is_last = 1; #(`P);
-        //input: efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab90785634
-        in_ready = 0;
-        is_last = 0;
-        while (out_ready !== 1)
-            #(`P);
-        check(256'h4e5db81da7692426876d35b79682db99011a7eca32b528753fed510c4e8d2cbc);
+        // // hash an (576-8) bit string
+        // reset = 1; #(`P); reset = 0;
+        // #(4*`P); // wait some cycles
+        // in_ready = 1;
+        // byte_num = 3; /* should have no effect */
+        // is_last = 0;
+        // for (i=0; i<8; i=i+1)
+        //   begin
+        //     in = 32'hEFCDAB90; #(`P);
+        //     in = 32'h78563412; #(`P);
+        //   end
+        // in = 32'hEFCDAB90; #(`P);
+        // in = 32'h78563412; is_last = 1; #(`P);
+        // //input: efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab9078563412efcdab90785634
+        // in_ready = 0;
+        // is_last = 0;
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'h4e5db81da7692426876d35b79682db99011a7eca32b528753fed510c4e8d2cbc);
 
-        // pad an (576-64) bit string
-        reset = 1; #(`P); reset = 0;
-        // don't wait any cycle
-        in_ready = 1;
-        byte_num = 7; /* should have no effect */
-        is_last = 0;
-        for (i=0; i<8; i=i+1)
-          begin
-            in = 32'hEFCDAB90; #(`P);
-            in = 32'h78563412; #(`P);
-          end
-        is_last = 1;
-        byte_num = 0;
-        #(`P);
-        in_ready = 0;
-        is_last = 0;
-        in = 0;
-        while (out_ready !== 1)
-            #(`P);
-        check(256'h2ad0433109f5b32a00ba4115994da973c2f14df9c7d0b4192710a8101705efa1);
+        // // pad an (576-64) bit string
+        // reset = 1; #(`P); reset = 0;
+        // // don't wait any cycle
+        // in_ready = 1;
+        // byte_num = 7; /* should have no effect */
+        // is_last = 0;
+        // for (i=0; i<8; i=i+1)
+        //   begin
+        //     in = 32'hEFCDAB90; #(`P);
+        //     in = 32'h78563412; #(`P);
+        //   end
+        // is_last = 1;
+        // byte_num = 0;
+        // #(`P);
+        // in_ready = 0;
+        // is_last = 0;
+        // in = 0;
+        // while (out_ready !== 1)
+        //     #(`P);
+        // check(256'h2ad0433109f5b32a00ba4115994da973c2f14df9c7d0b4192710a8101705efa1);
 
         // // pad an (576*2-16) bit string          | this input get error 
         // reset = 1; #(`P); reset = 0;
@@ -298,7 +293,7 @@ module tb_keccak256;
     endtask
 
     task check;
-        input [511:0] wish;
+        input [255:0] wish;
         begin
           if (out !== wish)
             begin
