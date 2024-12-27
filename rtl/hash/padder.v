@@ -32,13 +32,13 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
     reg                state;       /* state == 0: user will send more input data
                                      * state == 1: user will not send any data */
     reg                done;        /* == 1: out_ready should be 0 */
-    reg        [17:0]  i;           /* length of "out" buffer */
+    reg        [17:0]  i;           /* length of "out" buffer */ 
     wire       [31:0]  v0;          /* output of module "padder1" */
     reg        [31:0]  v1;          /* to be shifted into register "out" */
     wire               accept,      /* accept user input? */
                        update;
     
-    assign buffer_full = i[17];
+    assign buffer_full = i[17]; 
     assign out_ready = buffer_full;
     assign accept = (~ state) & in_ready & (~ buffer_full); // if state == 1, do not eat input
     assign update = (accept | (state & (~ buffer_full))) & (~ done); // don't fill buffer if done
@@ -87,3 +87,32 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
           end
       end
 endmodule
+
+/*
+>> on low_throughput (in = 32)
+input      [31:0]  in;
+reg        [17:0]  i;          --> length of "out" buffer 
+output reg [575:0] out; 
+576 / 18 = 32
+
+out=000000000000000090060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+i=001111111111111111
+
+out=000000009006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+i=011111111111111111
+
+out=900600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080
+i=111111111111111111
+
+--> on each 1 of 1, out is shifted to left by 8 bit
+
+----------------------------------------
+>> on high_throughput (in = 64)
+input      [63:0]  in;
+reg        [8:0]  i;          --> length of "out" buffer 
+output reg [575:0] out; 
+576 / 64 = 9
+
+in always < out (rate of SHA3)
+the size of i depends of in
+*/
