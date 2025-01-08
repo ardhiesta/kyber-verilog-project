@@ -1,3 +1,13 @@
+# Padding
+
+MPad = M || 0x06 || 0x00 ... || 0x80
+
+based on rate
+SHA3-512, r = 576
+SHA3-256, r = 1088
+
+ex for SHA3-512, MPad until 576 bits
+
 # How padding done in SHA3
 
 M = message
