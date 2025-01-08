@@ -21,9 +21,9 @@
 
 module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out_ready, f_ack);
     input              clk, reset;
-    input      [31:0]  in;
+    input      [191:0]  in;
     input              in_ready, is_last;
-    input      [1:0]   byte_num;
+    input      [5:0]   byte_num;
     output             buffer_full; /* to "user" module */
     output reg [575:0] out;         /* to "f_permutation" module */
     output             out_ready;   /* to "f_permutation" module */
@@ -32,13 +32,13 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
     reg                state;       /* state == 0: user will send more input data
                                      * state == 1: user will not send any data */
     reg                done;        /* == 1: out_ready should be 0 */
-    reg        [17:0]  i;           /* length of "out" buffer */ 
-    wire       [31:0]  v0;          /* output of module "padder1" */
-    reg        [31:0]  v1;          /* to be shifted into register "out" */
+    reg        [2:0]  i;           /* length of "out" buffer */
+    wire       [191:0]  v0;          /* output of module "padder1" */
+    reg        [191:0]  v1;          /* to be shifted into register "out" */
     wire               accept,      /* accept user input? */
                        update;
     
-    assign buffer_full = i[17]; 
+    assign buffer_full = i[2];
     assign out_ready = buffer_full;
     assign accept = (~ state) & in_ready & (~ buffer_full); // if state == 1, do not eat input
     assign update = (accept | (state & (~ buffer_full))) & (~ done); // don't fill buffer if done
@@ -47,13 +47,13 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
       if (reset)
         out <= 0;
       else if (update)
-        out <= {out[575-32:0], v1};
+        out <= {out[575-192:0], v1};
 
     always @ (posedge clk)
       if (reset)
         i <= 0;
       else if (f_ack | update)
-        i <= {i[16:0], 1'b1} & {18{~ f_ack}};
+        i <= {i[1:0], 1'b1} & {3{~ f_ack}};
 /*    if (f_ack)  i <= 0; */
 /*    if (update) i <= {i[16:0], 1'b1}; // increase length */
 
@@ -69,50 +69,26 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
       else if (state & out_ready)
         done <= 1;
 
-    padder1 p0 (in, byte_num, v0);
+    padder1ky p0 (in, byte_num, v0);
     
     always @ (*)
       begin
         if (state)
           begin
             v1 = 0;
-            v1[7] = v1[7] | i[16]; // "v1[7]" is the MSB of the last byte of "v1"
+            v1[7] = v1[7] | i[1]; // "v1[7]" is the MSB of the last byte of "v1"
           end
         else if (is_last == 0)
           v1 = in;
         else
           begin
             v1 = v0;
-            v1[7] = v1[7] | i[16];
+            v1[7] = v1[7] | i[1];
           end
       end
 endmodule
 
 /*
->> on low_throughput (in = 32)
-input      [31:0]  in;
-reg        [17:0]  i;          --> length of "out" buffer 
-output reg [575:0] out; 
-576 / 18 = 32
-
-out=000000000000000090060000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-i=001111111111111111
-
-out=000000009006000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-i=011111111111111111
-
-out=900600000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000080
-i=111111111111111111
-
---> on each 1 of 1, out is shifted to left by 8 bit
-
-----------------------------------------
->> on high_throughput (in = 64)
-input      [63:0]  in;
-reg        [8:0]  i;          --> length of "out" buffer 
-output reg [575:0] out; 
-576 / 64 = 9
-
-in always < out (rate of SHA3)
-the size of i depends of in
+increased input in high_throughput affect in round number executed
+TODO: try to create 128-bit input 
 */
