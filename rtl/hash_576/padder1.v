@@ -48,7 +48,7 @@
  this is experiment version to try 64-bit input
  */
 
-module padder1ky(in, byte_num, out);
+module padder1(in, byte_num, out);
     input      [575:0] in;
     input      [9:0]  byte_num; // 3-bit, max value: 7
     output reg [575:0] out;

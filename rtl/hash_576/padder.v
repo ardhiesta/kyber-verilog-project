@@ -80,7 +80,7 @@ module padder(clk, reset, in, in_ready, is_last, byte_num, buffer_full, out, out
       else if (state & out_ready)
         done <= 1;
 
-    padder1ky p0 (in, byte_num, v0);
+    padder1 p0 (in, byte_num, v0);
     
     always @ (*)
       begin

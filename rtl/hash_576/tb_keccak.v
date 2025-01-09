@@ -15,7 +15,7 @@
  */
 `include "keccak.v"
 `include "padder.v"
-`include "padder1ky.v"
+`include "padder1.v"
 `include "round.v"
 `include "rconst.v"
 `include "f_permutation.v"
@@ -57,8 +57,8 @@ module tb_keccak;
         $monitor("time=%3d, clk=%b, reset=%b, in=%h, out=%h,out_ready=%h, byte_num=%h, uut.i=%b, uut.padder_out=%h, uut.padder_out_1=%h \n", 
         $time, clk, reset, in, out, out_ready, byte_num, uut.i, uut.padder_out, uut.padder_out_1);
 
-        // $dumpfile("tb_keccak.vcd");
-        // $dumpvars(0, tb_keccak);
+        $dumpfile("tb_keccak.vcd");
+        $dumpvars(0, tb_keccak);
 
         // Initialize Inputs
         clk = 0;
