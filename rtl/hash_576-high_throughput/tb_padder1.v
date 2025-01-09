@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-`include "padder1ky.v"
+`include "padder1.v"
 `timescale 1ns / 1ps
 `define P 20
 
-module tb_padder1ky;
+module tb_padder1;
 
     // Inputs
     reg [575:0] in;
@@ -30,7 +30,7 @@ module tb_padder1ky;
     reg [575:0] wish;
 
     // Instantiate the Unit Under Test (UUT)
-    padder1ky uut (
+    padder1 uut (
         .in(in),
         .byte_num(byte_num),
         .out(out)

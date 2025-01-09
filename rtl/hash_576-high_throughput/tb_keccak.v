@@ -16,8 +16,8 @@
 `include "keccak.v"
 `include "padder.v"
 `include "padder1.v"
-`include "round.v"
-`include "rconst.v"
+`include "round2in1.v"
+`include "rconst2in1.v"
 `include "f_permutation.v"
 `timescale 1ns / 1ps
 `define P 20
